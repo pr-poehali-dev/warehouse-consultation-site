@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const Index = () => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      setMobileMenuOpen(false);
     }
   };
 
@@ -94,9 +96,64 @@ const Index = () => {
                 Записаться на консультацию
               </Button>
             </nav>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <Icon name={mobileMenuOpen ? 'X' : 'Menu'} size={24} />
+            </Button>
           </div>
         </div>
       </header>
+
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setMobileMenuOpen(false)}>
+          <div
+            className="fixed top-[73px] right-0 bottom-0 w-64 bg-white shadow-xl p-6 animate-slide-in-right"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <nav className="flex flex-col gap-4">
+              <button
+                onClick={() => scrollToSection('about')}
+                className={`text-left py-2 px-4 rounded-lg font-medium transition-colors hover:bg-primary/10 hover:text-primary ${
+                  activeSection === 'about' ? 'text-primary bg-primary/10' : 'text-foreground'
+                }`}
+              >
+                О нас
+              </button>
+              <button
+                onClick={() => scrollToSection('services')}
+                className={`text-left py-2 px-4 rounded-lg font-medium transition-colors hover:bg-primary/10 hover:text-primary ${
+                  activeSection === 'services' ? 'text-primary bg-primary/10' : 'text-foreground'
+                }`}
+              >
+                Услуги
+              </button>
+              <button
+                onClick={() => scrollToSection('articles')}
+                className={`text-left py-2 px-4 rounded-lg font-medium transition-colors hover:bg-primary/10 hover:text-primary ${
+                  activeSection === 'articles' ? 'text-primary bg-primary/10' : 'text-foreground'
+                }`}
+              >
+                Статьи
+              </button>
+              <button
+                onClick={() => scrollToSection('contact')}
+                className={`text-left py-2 px-4 rounded-lg font-medium transition-colors hover:bg-primary/10 hover:text-primary ${
+                  activeSection === 'contact' ? 'text-primary bg-primary/10' : 'text-foreground'
+                }`}
+              >
+                Контакты
+              </button>
+              <Button onClick={() => scrollToSection('contact')} className="mt-4 w-full">
+                Записаться на консультацию
+              </Button>
+            </nav>
+          </div>
+        </div>
+      )}
 
       <section
         id="about"
