@@ -401,21 +401,21 @@ const Index = () => {
                   <Icon name="MapPin" className="text-primary" size={24} />
                   <div>
                     <p className="text-sm font-semibold text-secondary">Адрес</p>
-                    <p className="text-sm text-foreground">г. Москва, ул. Промышленная, д. 10</p>
+                    <p className="text-sm text-foreground">г. Екатеринбург</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Icon name="Phone" className="text-primary" size={24} />
                   <div>
                     <p className="text-sm font-semibold text-secondary">Телефон</p>
-                    <p className="text-sm text-foreground">+7 (495) 123-45-67</p>
+                    <p className="text-sm text-foreground">+79126261717</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Icon name="Mail" className="text-primary" size={24} />
                   <div>
                     <p className="text-sm font-semibold text-secondary">Email</p>
-                    <p className="text-sm text-foreground">info@coldlogistics.ru</p>
+                    <p className="text-sm text-foreground">artanalytics66@gmail.com</p>
                   </div>
                 </div>
               </div>
