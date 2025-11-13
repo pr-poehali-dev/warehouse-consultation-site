@@ -66,7 +66,7 @@ const Index = () => {
                   activeSection === 'about' ? 'text-primary' : 'text-foreground'
                 }`}
               >
-                О нас
+                Обо мне
               </button>
               <button
                 onClick={() => scrollToSection('services')}
@@ -92,7 +92,7 @@ const Index = () => {
               >
                 Контакты
               </button>
-              <Button onClick={() => scrollToSection('contact')} size="sm">
+              <Button onClick={() => scrollToSection('contact')} size="sm" className="text-xs px-3 py-2">
                 Записаться на консультацию
               </Button>
             </nav>
@@ -147,7 +147,7 @@ const Index = () => {
               >
                 Контакты
               </button>
-              <Button onClick={() => scrollToSection('contact')} className="mt-4 w-full">
+              <Button onClick={() => scrollToSection('contact')} size="sm" className="mt-4 w-full">
                 Записаться на консультацию
               </Button>
             </nav>
@@ -175,7 +175,7 @@ const Index = () => {
             </div>
             <div className="animate-fade-in">
               <h2 className="text-4xl font-heading font-bold text-secondary mb-6">
-                О нас
+                Обо мне
               </h2>
               <p className="text-lg text-foreground mb-6 leading-relaxed">
                 С более чем 18-летним опытом работы в складской логистике и строительстве складских комплексов, 
