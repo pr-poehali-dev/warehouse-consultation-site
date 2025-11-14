@@ -310,19 +310,62 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 animate-fade-in">
               <div className="h-48 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                <Icon name="Thermometer" className="text-primary" size={48} />
+                <Icon name="FileText" className="text-primary" size={48} />
               </div>
               <CardContent className="p-6">
                 <h3 className="text-xl font-heading font-bold text-secondary mb-3">
-                  Как выбрать оборудование для глубокой заморозки?
+                  Общие положения для начала разработки низкотемпературного комплекса
                 </h3>
-                <p className="text-foreground mb-4">
-                  Подробное руководство по выбору холодильного оборудования для различных типов 
-                  продукции и объемов хранения.
-                </p>
-                <Button variant="link" className="p-0 h-auto">
-                  Читать далее <Icon name="ArrowRight" className="ml-2" size={16} />
-                </Button>
+                <div className="text-foreground mb-4 space-y-4 text-sm">
+                  <p>
+                    Для проектирования складского пространства с низкотемпературными зонами необходимо учесть специфику каждой функциональной области: приемка-разгрузка, переходные зоны (вестибюли/тамбуры), основная холодильная камера, зона комплектации/отгрузки и технические помещения.
+                  </p>
+                  
+                  <div>
+                    <h4 className="font-semibold mb-2">Расчет площадей основных зон:</h4>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li><strong>Зона приемки и разгрузки</strong> — примерно 20% от общей площади склада</li>
+                      <li><strong>Переходные зоны (тамбуры)</strong> — барьер от холода, защита от влаги и снега, повышают безопасность и энергоэффективность</li>
+                      <li><strong>Основная холодильная камера</strong> — расчет ведется исходя из массы товаров и требуемого пространства</li>
+                      <li><strong>Зона комплектации</strong> — подготовка заказов, погрузочные платформы, упаковка</li>
+                      <li><strong>Технические помещения</strong> — машинные отделения, электрооборудование, резервные источники</li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold mb-2">Материалы и грузоподъемность:</h4>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Сэндвич-панели с высокой степенью изоляции</li>
+                      <li>Влагостойкие полы, устойчивые к заморозке</li>
+                      <li>Металлоконструкции с расчетом на тяжелые грузы и перепады температур</li>
+                      <li>Запас грузоподъемности минимум 20% от расчетного веса</li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold mb-2">Интеграция автоматизации:</h4>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>WMS-системы для управления складом</li>
+                      <li>Контроль температуры и влажности</li>
+                      <li>Автоматические ворота и электронные замки</li>
+                      <li>Системы энергосбережения</li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold mb-2">Особенности проектирования:</h4>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Четкое деление на температурные зоны с отдельным доступом</li>
+                      <li>Ширина коридоров обычно 3,5 метра для работы на Рич траке</li>
+                      <li>Высота подъема до 10 метров</li>
+                      <li>Маршруты без пересечения потоков персонала, техники и товара</li>
+                    </ul>
+                  </div>
+                  
+                  <p className="text-muted-foreground italic">
+                    Такой подход позволяет добиться энергоэффективности, безопасности и оптимальной производительности для склада любого размера в условиях низкотемпературного хранения.
+                  </p>
+                </div>
               </CardContent>
             </Card>
 
