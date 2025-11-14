@@ -229,9 +229,16 @@ const Index = () => {
                 <h3 className="text-2xl font-heading font-bold text-secondary mb-4">
                   Глубокая заморозка
                 </h3>
-                <p className="text-foreground leading-relaxed">
+                <p className="text-foreground leading-relaxed mb-6">
                   Консультации по выбору оборудования, созданию холодильных зон и оптимизации энергопотребления.
                 </p>
+                <Button
+                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                  variant="outline"
+                  className="w-full"
+                >
+                  Заказать консультацию
+                </Button>
               </CardContent>
             </Card>
 
@@ -243,9 +250,16 @@ const Index = () => {
                 <h3 className="text-2xl font-heading font-bold text-secondary mb-4">
                   Строительство склада
                 </h3>
-                <p className="text-foreground leading-relaxed">
+                <p className="text-foreground leading-relaxed mb-6">
                   Расчет зон приемки, разгрузки, тамбуров, камер хранения, комплектации и технических помещений с учетом материалов, и автоматизации для эффективной работы в холоде.
                 </p>
+                <Button
+                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                  variant="outline"
+                  className="w-full"
+                >
+                  Заказать консультацию
+                </Button>
               </CardContent>
             </Card>
 
@@ -257,10 +271,17 @@ const Index = () => {
                 <h3 className="text-2xl font-heading font-bold text-secondary mb-4">
                   Комплексная консультация
                 </h3>
-                <p className="text-foreground leading-relaxed">
+                <p className="text-foreground leading-relaxed mb-6">
                   Анализ текущих процессов и разработка стратегии развития складской логистики 
                   с учетом бюджета и сроков.
                 </p>
+                <Button
+                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                  variant="outline"
+                  className="w-full"
+                >
+                  Заказать консультацию
+                </Button>
               </CardContent>
             </Card>
           </div>
