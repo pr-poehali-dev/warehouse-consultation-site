@@ -6,14 +6,46 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
+import ArticleCard from '@/components/ArticleCard';
+
+interface Article {
+  id: number;
+  title: string;
+  short_description: string;
+  full_content: string;
+  icon: string;
+  display_order: number;
+}
+
+const API_URL = 'https://functions.poehali.dev/941f1118-e5bc-48a9-8a2d-ff4bd917dc4b';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [expandedArticle1, setExpandedArticle1] = useState(false);
-  const [expandedArticle2, setExpandedArticle2] = useState(false);
-  const [expandedArticle3, setExpandedArticle3] = useState(false);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [expandedArticles, setExpandedArticles] = useState<{ [key: number]: boolean }>({});
   const { toast } = useToast();
+
+  useEffect(() => {
+    loadArticles();
+  }, []);
+
+  const loadArticles = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      setArticles(data);
+    } catch (error) {
+      console.error('Failed to load articles:', error);
+    }
+  };
+
+  const toggleArticle = (id: number) => {
+    setExpandedArticles(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -368,188 +400,9 @@ const Index = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 animate-fade-in">
-              <div className="h-48 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                <Icon name="FileText" className="text-primary" size={48} />
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-heading font-bold text-secondary mb-3">
-                  Общие положения для начала разработки низкотемпературного комплекса
-                </h3>
-                <div className="text-foreground mb-4 space-y-4 text-sm">
-                  <p>
-                    Для проектирования складского пространства с низкотемпературными зонами необходимо учесть специфику каждой функциональной области: приемка-разгрузка, переходные зоны, основная холодильная камера, зона комплектации и технические помещения.
-                  </p>
-                  
-                  {expandedArticle1 && (
-                    <div className="expand-animation">
-                      <div>
-                        <h4 className="font-semibold mb-2">Расчет площадей основных зон</h4>
-                        <ul className="list-disc pl-5 space-y-2">
-                          <li><strong>Зона приемки и разгрузки</strong> составляет примерно 20% от общей площади склада—сюда входят места для парковки, платформы, отдельные пункты контроля качества и сортировки перед размещением продукции в камерах.</li>
-                          <li><strong>Переходные зоны (вестибюли/тамбуры)</strong> служат барьером от холода и поддерживают стабильную внутреннюю температуру, защищают от влаги, снега и скользких условий. Они повышают безопасность и энергоэффективность, уменьшая потери холода при движении персонала и техники.</li>
-                          <li><strong>Основная холодильная камера</strong> занимает основную часть полезной площади — расчет объема хранения ведется исходя из массы товаров и требуемого пространства на каждую единицу (учитывается плотность, упаковка, способ штабелирования). Ориентироваться удобно на итоговый вес и режим хранения (заморозка, охлаждение).</li>
-                          <li><strong>Зона комплектации и отгрузки</strong> выделяется отдельно — здесь размещаются рабочие места для подготовки заказов, погрузочные платформы, упаковка, маркировка и маршрутизация. Уделяется внимание удобному транспортному потоку; эти участки должны быть отделены от холодильных камер для соблюдения температурного режима.</li>
-                          <li><strong>Технические помещения:</strong> сюда входят машинные отделения (где размещены компрессоры, генераторы, системы управления), помещения для электрооборудования и резервные источники питания.</li>
-                        </ul>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">Расчет грузоподъемности и выбор материалов</h4>
-                        <ul className="list-disc pl-5 space-y-2">
-                          <li>Выбор материалов делается с учетом низких температур: для стен, пола и потолка используют сэндвич-панели с высокой степенью изоляции, защищающие от теплопотерь и конденсата. Важно использовать влагостойкие и не разрушаемые при заморозке полы.</li>
-                          <li>Металлоконструкции, стойки, стеллажи должны быть рассчитаны на хранение тяжелых грузов и устойчивы к перепадам температур.</li>
-                          <li>Расчет грузоподъемности пола и стеллажных конструкций делается по максимальному весу хранимой продукции, с учетом возможностей складской техники, обычно допускается запас минимум 20% от расчетного веса.</li>
-                        </ul>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">Интеграция автоматизации</h4>
-                        <ul className="list-disc pl-5 space-y-2">
-                          <li>Внедряются автоматизированные системы перемещения и хранения: конвейеры, WMS-системы (Warehouse Management System), контроль температуры и влажности, системы мониторинга состояния оборудования.</li>
-                          <li>Автоматизация включает электронные замки, датчики движения в переходных зонах, систему энергоуправления (энергосбережение при отсутствии операций), автоматические ворота с быстрым открытием для минимизации потерь холода.</li>
-                        </ul>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">Особенности проектирования холодных складов</h4>
-                        <ul className="list-disc pl-5 space-y-2">
-                          <li>Рекомендуется предусматривать четкое деление на температурные зоны и размещать каждую из них с отдельным доступом.</li>
-                          <li>Ширина коридоров внутри склада задается с учетом движения применяемой техники — обычно 3,5 метра для работы на Рич траке высота подъема до 10 метров в высоту</li>
-                          <li>Важно создавать маршруты без пересечения потоков для персонала, техники и товара. Каждая зона оснащается отдельными системами безопасности и контроля.</li>
-                        </ul>
-                      </div>
-                      
-                      <p className="text-muted-foreground italic mt-4">
-                        Такой подход позволяет добиться энергоэффективности, безопасности и оптимальной производительности для склада любого размера в условиях низкотемпературного хранения.
-                      </p>
-                    </div>
-                  )}
-                </div>
-                <Button 
-                  variant="link" 
-                  className="p-0 h-auto"
-                  onClick={() => setExpandedArticle1(!expandedArticle1)}
-                >
-                  {expandedArticle1 ? 'Свернуть' : 'Читать далее'} 
-                  <Icon name={expandedArticle1 ? "ChevronUp" : "ArrowRight"} className="ml-2" size={16} />
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 animate-fade-in">
-              <div className="h-48 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                <Icon name="Zap" className="text-primary" size={48} />
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-heading font-bold text-secondary mb-3">
-                  5 способов снизить энергопотребление холодильных камер
-                </h3>
-                <div className="text-foreground mb-4 space-y-4 text-sm">
-                  <p>
-                    Практические рекомендации по оптимизации энергопотребления и сокращению операционных расходов на 20-30%.
-                  </p>
-                  
-                  {expandedArticle2 && (
-                    <div className="expand-animation">
-                      <div>
-                        <h4 className="font-semibold mb-2">1. Правильная изоляция и герметизация</h4>
-                        <p>Качественные сэндвич-панели и регулярная проверка уплотнителей дверей снижают теплопотери на 15-20%. Устраняйте щели и повреждения изоляции немедленно.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">2. Оптимизация работы холодильного оборудования</h4>
-                        <p>Регулярное техническое обслуживание компрессоров, очистка конденсаторов и испарителей, правильная настройка температурных режимов позволяют сэкономить до 25% энергии.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">3. Использование систем рекуперации тепла</h4>
-                        <p>Утилизация тепла от холодильных установок для обогрева служебных помещений или подогрева воды снижает общие энергозатраты на 10-15%.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">4. Внедрение LED-освещения и датчиков движения</h4>
-                        <p>Светодиодные светильники выделяют минимум тепла и потребляют в 5-8 раз меньше энергии. Автоматическое управление освещением экономит дополнительно 30-40%.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">5. Оптимизация логистики и потоков</h4>
-                        <p>Минимизация времени открытия дверей, использование воздушных завес, правильная организация хранения для свободной циркуляции воздуха снижают нагрузку на оборудование на 10-15%.</p>
-                      </div>
-                      
-                      <p className="text-muted-foreground italic">
-                        Комплексное применение всех методов позволяет сократить энергопотребление на 30-40% и значительно снизить операционные расходы.
-                      </p>
-                    </div>
-                  )}
-                </div>
-                <Button 
-                  variant="link" 
-                  className="p-0 h-auto"
-                  onClick={() => setExpandedArticle2(!expandedArticle2)}
-                >
-                  {expandedArticle2 ? 'Свернуть' : 'Читать далее'} 
-                  <Icon name={expandedArticle2 ? "ChevronUp" : "ArrowRight"} className="ml-2" size={16} />
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 animate-fade-in">
-              <div className="h-48 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                <Icon name="FileText" className="text-primary" size={48} />
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-heading font-bold text-secondary mb-3">
-                  ТР ТС 028/2012: ключевые требования для складов
-                </h3>
-                <div className="text-foreground mb-4 space-y-4 text-sm">
-                  <p>
-                    Разбор технического регламента Таможенного союза и практические советы по обеспечению соответствия нормативам при проектировании и эксплуатации холодильных складов.
-                  </p>
-                  
-                  {expandedArticle3 && (
-                    <div className="expand-animation">
-                      <div>
-                        <h4 className="font-semibold mb-2">Требования к помещениям</h4>
-                        <p>Стены, полы и потолки должны быть выполнены из влагостойких материалов, устойчивых к воздействию низких температур. Поверхности должны легко очищаться и дезинфицироваться.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">Температурный режим и контроль</h4>
-                        <p>Обязательна установка систем автоматического контроля и регистрации температуры с архивированием данных. Для замороженной продукции температура не выше -18°C, для охлажденной — от 0 до +6°C.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">Санитарные нормы</h4>
-                        <p>Требуется раздельное хранение разных групп товаров, наличие санпропускников для персонала, регулярная дезинфекция помещений и оборудования, контроль за грызунами и насекомыми.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">Вентиляция и освещение</h4>
-                        <p>Система вентиляции должна обеспечивать равномерное распределение температуры. Освещенность в зонах комплектации — не менее 200 лк, в зонах хранения — не менее 50 лк.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">Документация и сертификация</h4>
-                        <p>Необходимо вести журналы учета температурного режима, проводить регулярные проверки оборудования, иметь действующие сертификаты соответствия на холодильное оборудование.</p>
-                      </div>
-                      
-                      <p className="text-muted-foreground italic">
-                        Соблюдение требований ТР ТС 028/2012 обязательно для получения разрешений на эксплуатацию и гарантирует безопасность хранимой продукции.
-                      </p>
-                    </div>
-                  )}
-                </div>
-                <Button 
-                  variant="link" 
-                  className="p-0 h-auto"
-                  onClick={() => setExpandedArticle3(!expandedArticle3)}
-                >
-                  {expandedArticle3 ? 'Свернуть' : 'Читать далее'} 
-                  <Icon name={expandedArticle3 ? "ChevronUp" : "ArrowRight"} className="ml-2" size={16} />
-                </Button>
-              </CardContent>
-            </Card>
+            {articles.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
           </div>
         </div>
       </section>
