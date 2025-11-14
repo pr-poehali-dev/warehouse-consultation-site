@@ -19,7 +19,11 @@ interface Article {
   is_published: boolean;
 }
 
+const ADMIN_PASSWORD = '123QWE!asd';
+
 const Admin = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
   const [articles, setArticles] = useState<Article[]>([]);
   const [editingArticle, setEditingArticle] = useState<Article | null>(null);
   const [formData, setFormData] = useState<Article>({
@@ -33,8 +37,17 @@ const Admin = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    loadArticles();
+    const savedAuth = localStorage.getItem('admin_auth');
+    if (savedAuth === 'true') {
+      setIsAuthenticated(true);
+    }
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadArticles();
+    }
+  }, [isAuthenticated]);
 
   const loadArticles = async () => {
     try {
@@ -113,6 +126,75 @@ const Admin = () => {
     });
   };
 
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === ADMIN_PASSWORD) {
+      setIsAuthenticated(true);
+      localStorage.setItem('admin_auth', 'true');
+      toast({
+        title: 'Успех',
+        description: 'Вход выполнен'
+      });
+    } else {
+      toast({
+        title: 'Ошибка',
+        description: 'Неверный пароль',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('admin_auth');
+    toast({
+      title: 'Выход',
+      description: 'Вы вышли из админ-панели'
+    });
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="text-center">
+              <Icon name="Lock" className="inline-block mb-2" size={48} />
+              <h1 className="text-2xl font-heading font-bold text-secondary">
+                Вход в админ-панель
+              </h1>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="password">Пароль</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Введите пароль"
+                  required
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                <Icon name="LogIn" size={16} className="mr-2" />
+                Войти
+              </Button>
+              <a href="/">
+                <Button type="button" variant="outline" className="w-full">
+                  <Icon name="ArrowLeft" size={16} className="mr-2" />
+                  На главную
+                </Button>
+              </a>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background py-8 px-4">
       <div className="container mx-auto max-w-6xl">
@@ -123,12 +205,18 @@ const Admin = () => {
             </h1>
             <p className="text-muted-foreground">Управление статьями на сайте</p>
           </div>
-          <a href="/">
-            <Button variant="outline">
-              <Icon name="ArrowLeft" size={16} className="mr-2" />
-              На главную
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={handleLogout}>
+              <Icon name="LogOut" size={16} className="mr-2" />
+              Выйти
             </Button>
-          </a>
+            <a href="/">
+              <Button variant="outline">
+                <Icon name="ArrowLeft" size={16} className="mr-2" />
+                На главную
+              </Button>
+            </a>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
