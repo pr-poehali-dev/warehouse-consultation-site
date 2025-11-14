@@ -73,12 +73,42 @@ const Index = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast({
-      title: "Заявка отправлена!",
-      description: "Мы свяжемся с вами в ближайшее время.",
-    });
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      message: `Телефон: ${formData.get('phone')}\n\n${formData.get('message')}`
+    };
+
+    try {
+      const response = await fetch('https://functions.poehali.dev/7d4f8353-a5c0-4c4d-9360-f776bb10a0aa', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Заявка отправлена!",
+          description: "Мы свяжемся с вами в ближайшее время.",
+        });
+        form.reset();
+      } else {
+        throw new Error('Failed to send');
+      }
+    } catch (error) {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось отправить заявку. Попробуйте позже.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -430,21 +460,22 @@ const Index = () => {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">Ваше имя</Label>
-                    <Input id="name" placeholder="Иван Иванов" required />
+                    <Input id="name" name="name" placeholder="Иван Иванов" required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Телефон</Label>
-                    <Input id="phone" type="tel" placeholder="+7 (999) 123-45-67" required />
+                    <Input id="phone" name="phone" type="tel" placeholder="+7 (999) 123-45-67" required />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="example@company.com" required />
+                  <Input id="email" name="email" type="email" placeholder="example@company.com" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="message">Сообщение</Label>
                   <Textarea
                     id="message"
+                    name="message"
                     placeholder="Опишите вашу задачу или вопрос..."
                     rows={5}
                     required
