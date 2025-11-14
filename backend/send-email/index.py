@@ -6,7 +6,19 @@ import base64
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
+from email.mime.application import MIMEApplication
 from typing import Dict, Any
+from io import BytesIO
+try:
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image as RLImage
+    from reportlab.lib.units import cm
+    from reportlab.lib.enums import TA_CENTER, TA_LEFT
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+except ImportError:
+    pass
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
@@ -119,6 +131,79 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'body': json.dumps({'error': f'Failed to send email: {str(e)}'})
         }
 
+def create_pdf_guide() -> BytesIO:
+    '''Create PDF guide about warehouse construction mistakes'''
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
+    
+    story = []
+    styles = getSampleStyleSheet()
+    
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Heading1'],
+        fontSize=24,
+        textColor='#2563eb',
+        spaceAfter=30,
+        alignment=TA_CENTER
+    )
+    
+    heading_style = ParagraphStyle(
+        'CustomHeading',
+        parent=styles['Heading2'],
+        fontSize=16,
+        textColor='#2563eb',
+        spaceAfter=12,
+        spaceBefore=20
+    )
+    
+    normal_style = ParagraphStyle(
+        'CustomNormal',
+        parent=styles['Normal'],
+        fontSize=11,
+        spaceAfter=12,
+        alignment=TA_LEFT
+    )
+    
+    story.append(Spacer(1, 1*cm))
+    story.append(Paragraph("5 ключевых ошибок при строительстве складов с глубокой заморозкой", title_style))
+    story.append(Spacer(1, 1*cm))
+    
+    mistakes = [
+        {
+            "title": "1. Неправильный расчет теплоизоляции",
+            "text": "Недостаточная толщина теплоизоляции приводит к повышенным энергозатратам и образованию конденсата. Необходимо учитывать климатическую зону и режим эксплуатации склада."
+        },
+        {
+            "title": "2. Отсутствие температурных зон",
+            "text": "Прямой переход из теплого помещения в морозильную камеру создает термический шок для товара и оборудования. Обязательно проектируйте шлюзовые зоны и тамбуры."
+        },
+        {
+            "title": "3. Неправильная вентиляция",
+            "text": "Плохая циркуляция воздуха приводит к неравномерному распределению температуры и образованию наледи. Система вентиляции должна быть рассчитана с учетом объема камер."
+        },
+        {
+            "title": "4. Экономия на полах",
+            "text": "Полы в морозильных складах подвергаются экстремальным нагрузкам. Использование некачественных материалов приводит к растрескиванию и деформации уже в первые годы эксплуатации."
+        },
+        {
+            "title": "5. Игнорирование системы размораживания",
+            "text": "Отсутствие автоматизированной системы размораживания приводит к простоям оборудования и потере товара. Планируйте эту систему на этапе проектирования."
+        }
+    ]
+    
+    for mistake in mistakes:
+        story.append(Paragraph(mistake["title"], heading_style))
+        story.append(Paragraph(mistake["text"], normal_style))
+        story.append(Spacer(1, 0.5*cm))
+    
+    story.append(Spacer(1, 1*cm))
+    story.append(Paragraph("Избежать этих ошибок поможет профессиональная консультация на этапе проектирования.", normal_style))
+    
+    doc.build(story)
+    buffer.seek(0)
+    return buffer
+
 def send_client_email(client_email: str, client_name: str, sender_email: str, smtp_password: str):
     '''Send PDF guide to client'''
     msg = MIMEMultipart('mixed')
@@ -153,6 +238,14 @@ def send_client_email(client_email: str, client_name: str, sender_email: str, sm
             image_part.add_header('Content-ID', '<pdf_preview>')
             image_part.add_header('Content-Disposition', 'inline', filename='buklet_preview.jpg')
             msg.attach(image_part)
+    except:
+        pass
+    
+    try:
+        pdf_buffer = create_pdf_guide()
+        pdf_attachment = MIMEApplication(pdf_buffer.read(), _subtype='pdf')
+        pdf_attachment.add_header('Content-Disposition', 'attachment', filename='5_oshibok_sklady_zamorozka.pdf')
+        msg.attach(pdf_attachment)
     except:
         pass
     
