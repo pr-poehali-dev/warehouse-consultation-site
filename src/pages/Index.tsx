@@ -291,6 +291,63 @@ const Index = () => {
         </div>
       </section>
 
+      <section className="py-20 px-4 bg-gradient-to-br from-primary/5 to-background">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16 animate-fade-in">
+            <h2 className="text-4xl font-heading font-bold text-secondary mb-4">
+              Как я работаю?
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Процесс решения вопросов состоит из нескольких этапов:
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="relative overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 animate-fade-in">
+              <div className="absolute top-6 right-6 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <span className="text-2xl font-bold text-primary">1</span>
+              </div>
+              <CardContent className="p-8 pt-20">
+                <h3 className="text-2xl font-heading font-bold text-secondary mb-4">
+                  Анализ потребностей
+                </h3>
+                <p className="text-foreground leading-relaxed">
+                  Провожу удалённую консультацию с заказчиком для глубокого понимания его задач в области складской логистики и формулирования чётких требований.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="relative overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 animate-fade-in">
+              <div className="absolute top-6 right-6 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <span className="text-2xl font-bold text-primary">2</span>
+              </div>
+              <CardContent className="p-8 pt-20">
+                <h3 className="text-2xl font-heading font-bold text-secondary mb-4">
+                  Оперативное предложение
+                </h3>
+                <p className="text-foreground leading-relaxed">
+                  На основе полученных данных разрабатываю предварительное решение и направляю заказчику в течение 24 часов.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="relative overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 animate-fade-in">
+              <div className="absolute top-6 right-6 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <span className="text-2xl font-bold text-primary">3</span>
+              </div>
+              <CardContent className="p-8 pt-20">
+                <h3 className="text-2xl font-heading font-bold text-secondary mb-4">
+                  Реализация
+                </h3>
+                <p className="text-foreground leading-relaxed">
+                  После согласования и оплаты утверждённого варианта предоставляю детальную презентацию с пошаговым планом внедрения решения.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       <section
         id="articles"
         className="py-20 px-4"
