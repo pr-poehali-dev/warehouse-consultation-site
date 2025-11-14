@@ -116,11 +116,19 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-background py-8 px-4">
       <div className="container mx-auto max-w-6xl">
-        <div className="mb-8">
-          <h1 className="text-4xl font-heading font-bold text-secondary mb-2">
-            Админ-панель
-          </h1>
-          <p className="text-muted-foreground">Управление статьями на сайте</p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-heading font-bold text-secondary mb-2">
+              Админ-панель
+            </h1>
+            <p className="text-muted-foreground">Управление статьями на сайте</p>
+          </div>
+          <a href="/">
+            <Button variant="outline">
+              <Icon name="ArrowLeft" size={16} className="mr-2" />
+              На главную
+            </Button>
+          </a>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
