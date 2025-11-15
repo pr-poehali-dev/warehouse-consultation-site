@@ -414,7 +414,7 @@ const Index = () => {
         id="articles"
         className="py-20 px-4"
         style={{
-          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.93), rgba(255, 255, 255, 0.93)), url(https://cdn.poehali.dev/projects/5a8ac4f2-e421-48be-88da-a92f22758e9f/files/a6eeb69a-b6ae-4800-9a13-eec075ec0522.jpg)',
+          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url(https://cdn.poehali.dev/files/5404bcef-57f5-41da-b8af-43577a237bd8.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
